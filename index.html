@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank Sampah RW15 - Data Sampah</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #45a049;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        nav a:hover {
+            text-decoration: underline;
+        }
+        .hero {
+            background-image: url('https://via.placeholder.com/1200x400?text=Data+Sampah+Hijau'); /* Ganti dengan gambar nyata */
+            background-size: cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3em;
+            margin: 0;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section h2 {
+            color: #4CAF50;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        form {
+            display: grid;
+            gap: 10px;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #000000;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .btn-edit {
+            background-color: #2196F3;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .btn-delete {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .total {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-top: 10px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            width: 100%;
+            bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2em; }
+            table { font-size: 14px; }
+            form { max-width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🏞️ Bank Sampah Komplek Panca Motor <h1>
+        <p>Mendata dan Mengelola Sampah untuk Lingkungan Lebih Bersih</p>
+    </header>
+    
+    <nav>
+        <a href="#home">Beranda</a>
+        <a href="#data">Data Sampah</a>
+        <a href="#about">Tentang Kami</a>
+        <a href="#contact">Kontak</a>
+    </nav>
+    
+    <section id="home" class="hero">
+        <h1>Selamat Datang di Sistem Data Bank sampah Komplek Panca Motor</h1>
+    </section>
+    
+    <div class="container">
+        <section id="data" class="section">
+            <h2>Data Sampah</h2>
+            <form id="sampahForm">
+                <label for="jenis">Jenis Sampah:</label>
+                <select id="jenis" required>
+                    <option value="">Pilih Jenis</option>
+                    <option value="Plastik">Plastik</option>
+                    <option value="Kertas">Kertas</option>
+                    <option value="Logam">Logam</option>
+                    <option value="Kaca">Kaca</option>
+                    <option value="Lainnya">Lainnya</option>
+                </select>
+                
+                <label for="jumlah">Jumlah (kg):</label>
+                <input type="number" id="jumlah" min="0" step="0.1" required>
+                
+                <label for="harga">Harga per kg (Rp):</label>
+                <input type="number" id="harga" min="0" required>
+                
+                <label for="tanggal">Tanggal Penjemputan:</label>
+                <input type="date" id="tanggal" required>
+                
+                <button type="submit">Tambah Data</button>
+                <button type="button" id="clearAll" onclick="clearAllData()">Hapus Semua Data</button>
+            </form>
+            
+            <div id="dataList">
+                <h3>Daftar Sampah:</h3>
+                <table id="sampahTable">
+                    <thead>
+                        <tr>
+                            <th>Jenis</th>
+                            <th>Jumlah (kg)</th>
+                            <th>Harga/kg (Rp)</th>
+                            <th>Total Nilai (Rp)</th>
+                            <th>Tanggal</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <div id="totalValue" class="total">Total Nilai Keseluruhan: Rp 0</div>
+            </div>
+        </section>
+        
+        <section id="about" class="section">
+            <h2>Tentang Kami</h2>
+            <p>Bank Sampah Hijau membantu mendata sampah anorganik untuk daur ulang. Gunakan fitur di atas untuk mencatat sampah yang diterima atau dijual.</p>
+        </section>
+        
+        <section id="contact" class="section">
+            <h2>Kontak Kami</h2>
+            <p>Alamat: Perumahan Komplek Panca Motor, RW.015, Harapan Jaya, Kec. Bekasi Utara, Kota Bks, Jawa Barat 17124</p>
+            <p>Telepon: 0828 kapan kapan</p>
+            <p>Email: komplekpancamotorrw15@gmail.com (contoh)</p>
+            
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 Bank Sampah Hijau. Semua hak dilindungi.</p>
+    </footer>
+
+    <script>
+        let editIndex = -1; // Untuk mode edit
+
+        // Load data dari localStorage saat halaman dimuat
+        let sampahData = JSON.parse(localStorage.getItem('sampahData')) || [];
+
+        // Render tabel
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            const totalValue = document.getElementById('totalValue');
+            tbody.innerHTML = '';
+            let total = 0;
+
+            sampahData.forEach((item, index) => {
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${item.jenis}</td>
+                    <td>${item.jumlah}</td>
+                    <td>${item.harga.toLocaleString()}</td>
+                    <td>${(item.jumlah * item.harga).toLocaleString()}</td>
+                    <td>${item.tanggal}</td>
+                    <td>
+                        <button class="btn-edit" onclick="editData(${index})">Edit</button>
+                        <button class="btn-delete" onclick="deleteData(${index})">Hapus</button>
+                    </td>
+                `;
+                total += item.jumlah * item.harga;
+            });
+
+            totalValue.textContent = `Total Nilai Keseluruhan: Rp ${total.toLocaleString()}`;
+        }
+
+        // Tambah atau edit data
+        document.getElementById('sampahForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const jenis = document.getElementById('jenis').value;
+            const jumlah = parseFloat(document.getElementById('jumlah').value);
+            const harga = parseFloat(document.getElementById('harga').value);
+            const tanggal = document.getElementById('tanggal').value;
+
+            if (editIndex >= 0) {
+                // Edit mode
+                sampahData[editIndex] = { jenis, jumlah, harga, tanggal };
+                editIndex = -1;
+                document.querySelector('button[type="submit"]').textContent = 'Tambah Data';
+            } else {
+                // Tambah baru
+                sampahData.push({ jenis, jumlah, harga, tanggal });
+            }
+
+            localStorage.setItem('sampahData', JSON.stringify(sampahData));
+            renderTable();
+            this.reset(); // Reset form
+        });
+
+        // Edit data
+        function editData(index) {
+            const item = sampahData[index];
+            document.getElementById('jenis').value = item.jenis;
+            document.getElementById('jumlah').value = item.jumlah;
+            document.getElementById('harga').value = item.harga;
+            document.getElementById('tanggal').value = item.tanggal;
+            editIndex = index;
+            document.querySelector('button[type="submit"]').textContent = 'Update Data';
+            document.getElementById('sampahForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Hapus data
+        function deleteData(index) {
+            if (confirm('Yakin hapus data ini?')) {
+                sampahData.splice(index, 1);
+                localStorage.setItem('sampahData', JSON.stringify(sampahData));
+                renderTable();
+            }
+        }
+
+        // Hapus semua data
+        function clearAllData() {
+            if (confirm('Yakin hapus semua data?')) {
+                sampahData = [];
+                localStorage.removeItem('sampahData');
+                renderTable();
+            }
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Render awal
+        renderTable();
+    </script>
+</body>
+</html>
